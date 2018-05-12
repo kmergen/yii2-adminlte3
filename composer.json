@@ -1,0 +1,23 @@
+{
+    "name": "kmergen/yii2-adminlte3",
+    "description": "Yii2 admin and control panel based on bootstrap 4 and AdminLTE 3",
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "keywords": ["yii", "yii2", "extension", "assets", "theme"],
+    "authors": [
+        {
+            "name": "Klaus Megen",
+            "email": "kmergenweb@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "kmergen\\adminlte\\": ""
+        }
+    },
+    "require": {
+        "yiisoft/yii2": "~2.0.14",
+        "yiisoft/yii2-bootstrap4": "~1.0.0",
+        "kmergen/yii2-widgets": "*"
+    }
+}
