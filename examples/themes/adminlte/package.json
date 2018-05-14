@@ -1,0 +1,84 @@
+{
+  "name": "yii2-adminlte3",
+  "description": "Responsive open source admin dashboard and control panel.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Klaus Mergen <kmergenweb@gmail.com>",
+  "main": "dist/js/adminlte.min.js",
+  "scripts": {
+    "build": "npm-run-all --sequential build-copy css js",
+    "build-copy": "npm-run-all build-copy:img build-copy:fonts",
+    "build-copy:img": "copyfiles \"img/**/*\" ../../web/themes/adminlte/",
+    "build-copy:fonts": "copyfiles -u 3 \"node_modules/font-awesome/fonts/**/*\"  ../../web/themes/adminlte/fonts",
+    "css": "npm-run-all --sequential css-compile css-minify",
+    "css-compile": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/style.scss ../../web/themes/adminlte/css/app.css",
+    "css-minify": "cleancss --level 1 --output ../../web/themes/adminlte/css/app.min.css ../../web/themes/adminlte/css/app.css",
+    "js": "npm-run-all js-dev js-prod --sequential",
+    "js-dev": "uglifyjs node_modules/admin-lte/plugins/jquery/jquery.min.js node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.js ../../../vendor/yiisoft/yii2/assets/Yii.js  -o ../../web/themes/adminlte/js/app.js --beautify --comments all --source-map \"url='app.js.map'\"",
+    "js-prod": "uglifyjs ../../web/themes/adminlte/js/app.js -c -m -o ../../web/themes/adminlte/js/app.min.js",
+    "sync": "browser-sync start --proxy yii2develop --no-inject-changes --files ../../web/themes/adminlte/css ../../web/themes/adminlte/js",
+    "serve": "npm-run-all --parallel sync watch-css watch-js",
+    "watch-css": "nodemon --watch scss/ -e scss -x \"npm run css\"",
+    "watch-js": "nodemon --watch js/ -x \"npm run js\""
+  },
+  "keywords": [
+    "css",
+    "sass",
+    "responsive",
+    "admin",
+    "template",
+    "theme",
+    "framework",
+    "control-panel",
+    "dashboard"
+  ],
+  "homepage": "https://adminlte.io",
+  "style": "dist/css/adminlte.css",
+  "sass": "build/scss/AdminLTE.scss",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/almasaeed2010/AdminLTE.git"
+  },
+  "bugs": {
+    "url": "https://github.com/almasaeed2010/AdminLTE/issues"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^1.0.0-beta.4",
+    "admin-lte": "^3.0.0-alpha.2",
+    "bootstrap": "^4.1.1",
+    "chart.js": "^2.7.2",
+    "datatables.net": "^1.10.16",
+    "datatables.net-bs4": "^1.10.16",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "jquery-ui": "^1.12.1",
+    "popper.js": "^1.14.3"
+  },
+  "peerDependencies": {
+    "font-awesome": "^4.7.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync": "^2.24.4",
+    "clean-css-cli": "^4.1.11",
+    "copyfiles": "^2.0.0",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
+    "eslint-plugin-compat": "^2.2.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "fs-extra": "^5.0.0",
+    "ncp": "^2.0.0",
+    "node-sass": "^4.8.3",
+    "nodemon": "^1.17.3",
+    "npm-run-all": "^4.1.2",
+    "path": "^0.12.7",
+    "rollup": "^0.55.5",
+    "rollup-plugin-babel": "^3.0.3",
+    "style-loader": "^0.19.1",
+    "uglify-js": "^3.3.22"
+  }
+}

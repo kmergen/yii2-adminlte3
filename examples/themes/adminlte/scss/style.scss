@@ -1,0 +1,20 @@
+/*!
+ * Yii2 AdminLTE 3 - Open Source Bootstrap Admin Template
+ * @version v1.0.0
+ * @license BSD
+ */
+
+@import "node_modules/font-awesome/scss/font-awesome";
+
+// If you want to override variables do it here
+@import "variables";
+
+// Import bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// Import styles
+@import "node_modules/admin-lte/build/scss/AdminLTE-raw";
+
+// If you want to add something do it here
+@import "custom";
+
