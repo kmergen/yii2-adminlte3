@@ -6,7 +6,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace kmergen\coreui\widgets;
+namespace kmergen\adminlte\widgets;
 
 use Yii;
 use yii\base\InvalidConfigException;
