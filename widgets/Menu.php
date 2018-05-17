@@ -14,60 +14,91 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 /**
- * Class Sidebar
- * Theme sidebar widget.
+ * Class Menu
+ * Theme menu widget.
  */
-class Sidebar extends \yii\widgets\Menu
+class Menu extends \yii\widgets\Menu
 {
     /**
      * @inheritdoc
      */
-    public $itemOptions = ['class' => 'nav-item'];
-    public $linkTemplate = '<a class="nav-link" href="{url}">{icon} {label}</a>';
-    public $submenuTemplate = "
-                    <ul class=\"nav-dropdown-items\">\n{items}\n</ul>";
+    public $linkTemplate = '<a href="{url}">{icon} {label}</a>';
+    /**
+     * @inheritdoc
+     * Styles all labels of items on sidebar by AdminLTE
+     */
+    public $labelTemplate = '<span>{label}</span>';
+    public $submenuTemplate = "\n<ul class='treeview-menu' {show}>\n{items}\n</ul>\n";
     public $activateParents = true;
+    public $defaultIconHtml = '<i class="fa fa-circle-o"></i> ';
+    public $options = ['class' => 'sidebar-menu', 'data-widget' => 'tree'];
+
+    /**
+     * @var string is prefix that will be added to $item['icon'] if it exist.
+     * By default uses for Font Awesome (http://fontawesome.io/)
+     */
+    public static $iconClassPrefix = 'fa fa-';
+
+    private $noDefaultAction;
+    private $noDefaultRoute;
+
+    /**
+     * Renders the menu.
+     */
+    public function run()
+    {
+        if ($this->route === null && Yii::$app->controller !== null) {
+            $this->route = Yii::$app->controller->getRoute();
+        }
+        if ($this->params === null) {
+            $this->params = Yii::$app->request->getQueryParams();
+        }
+        $posDefaultAction = strpos($this->route, Yii::$app->controller->defaultAction);
+        if ($posDefaultAction) {
+            $this->noDefaultAction = rtrim(substr($this->route, 0, $posDefaultAction), '/');
+        } else {
+            $this->noDefaultAction = false;
+        }
+        $posDefaultRoute = strpos($this->route, Yii::$app->controller->module->defaultRoute);
+        if ($posDefaultRoute) {
+            $this->noDefaultRoute = rtrim(substr($this->route, 0, $posDefaultRoute), '/');
+        } else {
+            $this->noDefaultRoute = false;
+        }
+        $items = $this->normalizeItems($this->items, $hasActiveChild);
+        if (!empty($items)) {
+            $options = $this->options;
+            $tag = ArrayHelper::remove($options, 'tag', 'ul');
+
+            echo Html::tag($tag, $this->renderItems($items), $options);
+        }
+    }
+
     /**
      * @inheritdoc
      */
     protected function renderItem($item)
     {
-        if(isset($item['items'])) {
-            $labelTemplate = '
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="{url}">{label}</a>';
-            $linkTemplate = '
-                <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="{url}">{icon} {label}</a>';
-        }
-        else {
+        if (isset($item['items'])) {
+            $labelTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
+            $linkTemplate = '<a href="{url}">{icon} {label} <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
+        } else {
             $labelTemplate = $this->labelTemplate;
             $linkTemplate = $this->linkTemplate;
         }
 
-        if (isset($item['url'])) {
-            $template = ArrayHelper::getValue($item, 'template', $linkTemplate);
-            $replace = !empty($item['icon']) ? [
-                '{url}' => Url::to($item['url']),
-                '{label}' => $item['label'],
-                '{icon}' => '<i class="' . $item['icon'] .(empty($item['class']) ? '' : ' '.$item['class']).'" aria-hidden="true"></i>'
-            ] : [
-                '{url}' => Url::to($item['url']),
-                '{label}' => $item['label'],
-                '{icon}' => null,
-            ];
-            return strtr($template, $replace);
-        } else {
-            $template = ArrayHelper::getValue($item, 'template', $labelTemplate);
-            $replace = !empty($item['icon']) ? [
-                '{label}' => $item['label'],
-                '{icon}' => '<i class="' . $item['icon'] . '" aria-hidden="true"></i>'
-            ] : [
-                '{label}' => '<span class="nav-label">'.$item['label'].'</span>',
-            ];
-            return strtr($template, $replace);
-        }
+        $replacements = [
+            '{label}' => strtr($this->labelTemplate, ['{label}' => $item['label'],]),
+            '{icon}' => empty($item['icon']) ? $this->defaultIconHtml
+                : '<i class="' . self::$iconClassPrefix . $item['icon'] . '"></i> ',
+            '{url}' => isset($item['url']) ? Url::to($item['url']) : 'javascript:void(0);',
+        ];
+
+        $template = ArrayHelper::getValue($item, 'template', isset($item['url']) ? $linkTemplate : $labelTemplate);
+
+        return strtr($template, $replacements);
     }
+
     /**
      * Recursively renders the menu items (without the container tag).
      * @param array $items the menu items to be rendered recursively
@@ -100,16 +131,20 @@ class Sidebar extends \yii\widgets\Menu
             $menu = $this->renderItem($item);
             if (!empty($item['items'])) {
                 $menu .= strtr($this->submenuTemplate, [
-                    //'{show}' => $item['active'] ? " style='display: block'" : '',
-                    '{show}' => '',
+                    '{show}' => $item['active'] ? "style='display: block'" : '',
                     '{items}' => $this->renderItems($item['items']),
                 ]);
+                if (isset($options['class'])) {
+                    $options['class'] .= ' treeview';
+                } else {
+                    $options['class'] = 'treeview';
+                }
             }
-            $lines[] = '
-                ' . Html::tag($tag, $menu, $options);
+            $lines[] = Html::tag($tag, $menu, $options);
         }
         return implode("\n", $lines);
     }
+
     /**
      * @inheritdoc
      */
@@ -149,6 +184,7 @@ class Sidebar extends \yii\widgets\Menu
         }
         return array_values($items);
     }
+
     /**
      * Checks whether a menu item is active.
      * This is done by checking if [[route]] and [[params]] match that specified in the `url` option of the menu item.
@@ -164,17 +200,10 @@ class Sidebar extends \yii\widgets\Menu
         if (isset($item['url']) && is_array($item['url']) && isset($item['url'][0])) {
             $route = $item['url'][0];
             if ($route[0] !== '/' && Yii::$app->controller) {
-                $route = Yii::$app->controller->module->getUniqueId() . '/' . $route;
+                $route = ltrim(Yii::$app->controller->module->getUniqueId() . '/' . $route, '/');
             }
-            $arrayRoute = explode('/', ltrim($route, '/'));
-            $arrayThisRoute = explode('/', $this->route);
-            if ($arrayRoute[0] !== $arrayThisRoute[0]) {
-                return false;
-            }
-            if (isset($arrayRoute[1]) && $arrayRoute[1] !== $arrayThisRoute[1]) {
-                return false;
-            }
-            if (isset($arrayRoute[2]) && $arrayRoute[2] !== $arrayThisRoute[2]) {
+            $route = ltrim($route, '/');
+            if ($route != $this->route && $route !== $this->noDefaultRoute && $route !== $this->noDefaultAction) {
                 return false;
             }
             unset($item['url']['#']);
