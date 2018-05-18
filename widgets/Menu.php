@@ -22,7 +22,7 @@ class Menu extends \yii\widgets\Menu
     /**
      * @inheritdoc
      */
-    public $linkTemplate = '<a class="nav-link" href="{url}">{icon} {label}</a>';
+    public $linkTemplate = '<a class="nav-link{active}" href="{url}">{icon} {label}</a>';
     /**
      * @inheritdoc
      * Styles all labels of items on sidebar by AdminLTE
@@ -31,8 +31,7 @@ class Menu extends \yii\widgets\Menu
     public $labelTemplate = '<p>{label}</p>';
     public $submenuTemplate = "\n<ul class='nav nav-treeview' {show}>\n{items}\n</ul>\n";
     public $activateParents = true;
-    public $defaultIconHtml = '<i class="fa fa-circle-o"></i> ';
-    public $options = ['class' => 'sidebar-menu', 'data-widget' => 'tree'];
+    public $options = ['class' => 'nav nav-pills nav-sidebar flex-column', 'data-widget' => 'treeview', 'role' => 'menu', 'data-accordion' => 'false'];
 
 
     private $noDefaultAction;
@@ -76,8 +75,8 @@ class Menu extends \yii\widgets\Menu
     protected function renderItem($item)
     {
         if (isset($item['items'])) {
-            $labelTemplate = '<a class="nav-link" href="{url}">{icon} {label} <p><i class="right fa fa-angle-left"></i></p></a>';
-            $linkTemplate = '<a class="nav-link" href="{url}">{icon} {label} <p><i class="right fa fa-angle-left"></i></p></a>';
+            $labelTemplate = '<a class="nav-link{active}" href="{url}">{icon} {label} <p><i class="right fa fa-angle-left"></i></p></a>';
+            $linkTemplate = '<a class="nav-link{active}" href="{url}">{icon} {label} <p><i class="right fa fa-angle-left"></i></p></a>';
         } else {
             $labelTemplate = $this->labelTemplate;
             $linkTemplate = $this->linkTemplate;
@@ -88,6 +87,7 @@ class Menu extends \yii\widgets\Menu
             '{icon}' => empty($item['icon']) ? ''
                 : '<i class="nav-icon ' . $item['icon'] . '"></i> ',
             '{url}' => isset($item['url']) ? Url::to($item['url']) : 'javascript:void(0);',
+            '{active}' => $item['active'] ? ' ' . $this->activeCssClass : '',
         ];
 
         $template = ArrayHelper::getValue($item, 'template', isset($item['url']) ? $linkTemplate : $labelTemplate);
@@ -110,6 +110,9 @@ class Menu extends \yii\widgets\Menu
             $class = [];
             if ($item['active']) {
                 $class[] = $this->activeCssClass;
+                if (!empty($item['items'])) {
+                    $class[] = 'menu-open';
+                }
             }
             if ($i === 0 && $this->firstItemCssClass !== null) {
                 $class[] = $this->firstItemCssClass;
