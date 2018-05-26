@@ -1,1 +1,11 @@
-// core overrides
+//Colors
+$white: #fff;
+$blue:    #007bff;
+
+// Breadcrumbs
+$breadcrumb-bg: $white;
+
+
+//Sidebar
+$sidebar-dark-submenu-active-color: lighten($blue, 10);
+$sidebar-dark-submenu-active-bg: transparent;

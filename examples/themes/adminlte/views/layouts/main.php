@@ -42,7 +42,8 @@ $items = [
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
         <?php $this->head() ?>
     </head>
-    <body class="sidebar-mini navbar-fixed-top">
+    <body class="sidebar-mini navbar-fixed-top<?= isset($this->params['bodyCssClass']) ? " {$this->params['bodyCssClass']}" : '' ?>">
+
     <?php $this->beginBody() ?>
     <div class="wrapper">
         <!-- Navbar -->
@@ -52,7 +53,7 @@ $items = [
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
+                <li class="nav-item d-sm-inline-block">
                     <?= Html::a(Yii::t('backend', 'Home'), ['/dashboard'], ['class' => 'nav-link']) ?>
                 </li>
             </ul>
@@ -82,7 +83,7 @@ $items = [
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <?= Html::a(Html::img('@web/themes/adminlte/img/logo.png', ['alt' => 'Logo', 'class' => 'brand-image img-circle elevation-3']) . '<span>Mein Logo</span>', ['/dashboard'], ['class' => 'brand-link']) ?>
+            <?= Html::a(Html::img('@web/themes/adminlte/img/logo.png', ['alt' => 'Logo', 'class' => 'brand-image img-circle elevation-3']) . '<span class="brand-text font-weight-light">Mein Logo</span>', ['/dashboard'], ['class' => 'brand-link']) ?>
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
@@ -100,39 +101,18 @@ $items = [
             <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
+
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?php
-                            if (empty($this->params['breadcrumbs'])) {
-                                $homeLink = false;
-                                $this->params['breadcrumbs'][] = Yii::t('backend', 'Dashboard');
-                            } else {
-                                $homeLink = ['label' => Yii::t('backend', 'Dashboard'), 'url' => Yii::$app->getHomeUrl()];
-                            }
-                            echo Breadcrumbs::widget([
-                                'links' => $this->params['breadcrumbs'],
-                                'homeLink' => $homeLink
-                            ]) ?>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
+            <?=
+            Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+            <div class="content container-fluid">
+                <?= Alert::widget() ?>
+                <?= $content ?>
             </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            <div class="content">
-                <div class="container-fluid">
-                    <?= Alert::widget() ?>
-                    <?= $content ?>
-                </div>
-            </div>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
+
 
         <!-- Main Footer -->
         <footer class="main-footer">

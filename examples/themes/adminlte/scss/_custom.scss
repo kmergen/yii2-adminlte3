@@ -1,14 +1,23 @@
 /*
-Custom CoreUi Styles
+Custom Styles
 */
-.hold-transition .content-wrapper {
-  background-color: yellow;
+.navbar-fixed-top .content-wrapper {
+  padding-top: 3.5rem;
 }
 
-.app-header.navbar {
-  padding-right: .75rem;
+.breadcrumb {
+  border-bottom: 1px solid #c8ced3;
+  margin-bottom: 1rem;
+  padding: .5rem 1rem;
 }
 
-body {
-  background-color: yellow;
+.content {
+  margin-top: 1rem;
 }
+
+/* Justify content in center of viewport. see blank-layout login-page */
+.app-justify-center {
+  display: flex;
+  min-height: 100vh;
+}
+

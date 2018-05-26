@@ -34,7 +34,7 @@ use yii\helpers\Url;
 </head>
 <?php
 ?>
-<body class="blank-layout<?= isset($this->params['bodyCssClass']) ? " {$this->params['bodyCssClass']}" : '' ?>">
+<body class="blank-layout app-justify-center flex-row align-items-center<?= isset($this->params['bodyCssClass']) ? " {$this->params['bodyCssClass']}" : '' ?>">
 <?php $this->beginBody() ?>
 <?= $content ?>
 <?= Html::jsFile(YII_DEBUG ? '@web/themes/adminlte/js/app.js' : '@web/themes/adminlte/js/app.min.js?v=' . filemtime(Yii::getAlias('@webroot/themes/adminlte/js/app.min.js'))) ?>
