@@ -6,7 +6,9 @@
   "author": "Klaus Mergen <kmergenweb@gmail.com>",
   "main": "dist/js/adminlte.min.js",
   "scripts": {
-    "build": "npm-run-all --sequential build-copy css js",
+    "build": "npm-run-all --sequential build-clean build-js-directory build-copy css js",
+    "build-clean": "rimraf ../../web/themes/adminlte/",
+    "build-js-directory": "mkdirp \"../../web/themes/adminlte/js\"",
     "build-copy": "npm-run-all build-copy-img build-copy-fonts",
     "build-copy-img": "copyfiles \"img/**/*\" ../../web/themes/adminlte/",
     "build-copy-fonts": "copyfiles -u 3 \"node_modules/font-awesome/fonts/**/*\"  ../../web/themes/adminlte/fonts",
