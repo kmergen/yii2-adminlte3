@@ -24,7 +24,7 @@ to the `require` section of your `composer.json` file.
 
 ### 1. Usage with npm
 
-### 1. Usage with common Yii2 assets
+Read the [Example Documentation](https://github.com/kmergen/yii2-adminlte/blob/master/examples/README.md)
 
 > Note: This extension is under development. Use it not in production.
 
