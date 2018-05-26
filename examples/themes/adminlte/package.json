@@ -16,7 +16,7 @@
     "js": "npm-run-all js-concat js-minify --sequential",
     "js-concat": "uglifyjs node_modules/admin-lte/plugins/jquery/jquery.min.js node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.js node_modules/admin-lte/dist/js/adminlte.min.js ../../../vendor/yiisoft/yii2/assets/Yii.js js/custom.js  -o ../../web/themes/adminlte/js/app.js --beautify --comments all --source-map \"url='app.js.map'\"",
     "js-minify": "uglifyjs ../../web/themes/adminlte/js/app.js -c -m -o ../../web/themes/adminlte/js/app.min.js",
-    "sync": "browser-sync start --proxy yii2develop --no-inject-changes --files views ../../web/themes/adminlte/css/app.css ../../web/themes/adminlte/js",
+    "sync": "browser-sync start --proxy localhost --no-inject-changes --files views ../../web/themes/adminlte/css/app.css ../../web/themes/adminlte/js",
     "serve": "npm-run-all --parallel sync watch-css watch-js",
     "watch-css": "nodemon --watch scss/ -e scss -x \"npm run css-compile\"",
     "watch-js": "nodemon --watch js/ -x \"npm run js-concat\""
