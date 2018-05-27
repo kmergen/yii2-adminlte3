@@ -24,6 +24,8 @@ $js = <<<JS
        $(this).find('.overlay').remove(); 
    });
 JS;
+
+$this->registerJs($js);
 ?>
 <div class="row">
     <div class="col-md-6">
