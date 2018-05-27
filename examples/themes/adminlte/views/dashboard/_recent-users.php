@@ -15,9 +15,9 @@ use kmergen\widgets\LinkPager;
 
 ?>
 <div class="card">
-    <div class="card-header clearfix">
-        <h3 class="float-left"><?= Yii::t('app', 'Recent Users') ?></h3>
-        <div class="float-right"><a href="<?= Url::to(['recent-users']) ?>"><?= Yii::t('backend', 'Refresh') ?>
+    <div class="card-header">
+        <h3 class="card-title"><?= Yii::t('app', 'Recent Users') ?></h3>
+        <div class="card-tools"><a href="<?= Url::to(['recent-users']) ?>"><?= Yii::t('backend', 'Refresh') ?>
                 <i class="fa fa-refresh"></i></a>
         </div>
     </div>

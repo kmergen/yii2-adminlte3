@@ -13,6 +13,17 @@ use yii\widgets\Pjax;
 
 $this->title = 'Dashboard';
 $this->params['bodyCssClass'] = 'dashboard';
+
+$js = <<<JS
+    var el = $("[data-pjax-container]");
+   $(el).on('pjax:clicked', function() {
+       var overlay = $('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+       $(this).find('.card').append(overlay);
+   });
+   $(el).on('pjax:complete', function() {
+       $(this).find('.overlay').remove(); 
+   });
+JS;
 ?>
 <div class="row">
     <div class="col-md-6">
